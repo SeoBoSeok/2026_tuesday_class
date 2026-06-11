@@ -109,6 +109,31 @@ export function getCurriculum(): CurriculumRow[] {
   return out;
 }
 
+// ── 수업 기록 (classlog) ──────────────────────────────────
+export interface ClassLog {
+  date: string;
+  title: string;
+  content: string;
+}
+
+export function getClassLogs(): ClassLog[] {
+  const dir = path.join(LMS_DIR, "classlog");
+  let files: string[] = [];
+  try {
+    files = fs.readdirSync(dir).filter((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f));
+  } catch {
+    return [];
+  }
+  return files
+    .sort()
+    .reverse()
+    .map((f) => {
+      const content = readSafe(path.join(dir, f));
+      const title = content.split("\n")[0]?.replace(/^#\s*/, "") ?? f;
+      return { date: f.replace(/\.md$/, ""), title, content };
+    });
+}
+
 // ── 학생 ──────────────────────────────────────────────────
 export interface Student {
   id: string;

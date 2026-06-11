@@ -13,7 +13,7 @@ const NAV = [
   { href: "/students/b", label: "학생 B" },
   { href: "/materials", label: "자료실" },
   { href: "/quiz", label: "퀴즈" },
-  { href: "/questions", label: "질문 모음" },
+  { href: "/questions", label: "질문 게시판" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

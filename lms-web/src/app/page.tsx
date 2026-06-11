@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { STUDENTS, getCommits, getCurriculum, getDueCards, getQuestions, getQuizzes, getQuizResults } from "@/lib/data";
+import { STUDENTS, getClassLogs, getCommits, getCurriculum, getDueCards, getQuestions, getQuizzes, getQuizResults } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +13,7 @@ export default async function Dashboard() {
   const quizzes = getQuizzes();
   const results = await getQuizResults();
   const commitsByStudent = await Promise.all(STUDENTS.map((s) => getCommits(s, 3)));
+  const classLogs = getClassLogs().slice(0, 3);
 
   return (
     <div className="space-y-8">
@@ -72,6 +73,31 @@ export default async function Dashboard() {
             </Link>
           );
         })}
+      </section>
+
+      {/* 최근 수업 기록 */}
+      <section className="rounded-xl bg-white p-5 shadow-sm border border-amber-100">
+        <h2 className="font-bold mb-3">📅 최근 수업 기록</h2>
+        {classLogs.length === 0 ? (
+          <p className="text-sm text-gray-400">
+            아직 수업 기록이 없어요. 수업 시작 때 선생님이 &ldquo;수업 시작해줘&rdquo;라고 하면 자동으로 기록돼요.
+          </p>
+        ) : (
+          <ul className="space-y-3">
+            {classLogs.map((log) => (
+              <li key={log.date}>
+                <details className="group">
+                  <summary className="cursor-pointer text-sm font-medium hover:text-amber-700 list-none flex items-baseline gap-2">
+                    <span className="text-xs font-mono text-amber-700">{log.date}</span>
+                    <span className="flex-1">{log.title.replace(/^\d{4}-\d{2}-\d{2}\s*수업\s*[—-]?\s*/, "")}</span>
+                    <span className="text-gray-300 group-open:rotate-90 transition-transform text-xs">▶</span>
+                  </summary>
+                  <pre className="mt-2 whitespace-pre-wrap rounded-lg bg-amber-50 p-3 text-xs text-gray-700 font-sans leading-relaxed">{log.content}</pre>
+                </details>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* 진행중 + 최근 질문 */}
