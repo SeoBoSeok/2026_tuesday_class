@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM Wiki — A Pattern for Persistent Knowledge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700;9..144,900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0a;
+    --paper: #f4ede0;
+    --ink: #1a1814;
+    --accent: #d94f2a;
+    --highlight: #f5c842;
+    --muted: #8a8378;
+    --kr: #b8b0a3;
+    --grid: rgba(255, 255, 255, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Fraunces', Georgia, serif;
+    overflow: hidden;
+  }
+
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 4.5vh 6vw;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; animation: fadeIn 0.5s ease-out; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Korean translation styles */
+  .kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  /* Bilingual heading: EN on top, KR below */
+  .bi-h2 .en {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .bi-h2 .kr {
+    display: block;
+    font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+    line-height: 1.4;
+    margin-top: 0.6rem;
+    font-weight: 400;
+  }
+
+  /* Header bar */
+  .topbar {
+    position: absolute;
+    top: 2.8vh;
+    left: 6vw;
+    right: 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .topbar .dot { color: var(--accent); }
+
+  .botbar {
+    position: absolute;
+    bottom: 2.8vh;
+    left: 6vw;
+    right: 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .pageno { color: var(--paper); }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(2.6rem, 6vw, 5.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--paper);
+  }
+  h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+
+  code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .accent { color: var(--accent); }
+  .highlight {
+    background: linear-gradient(transparent 60%, rgba(245, 200, 66, 0.35) 60%);
+    color: var(--paper);
+    padding: 0 0.1em;
+  }
+  .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 3px;
+    color: var(--muted);
+  }
+
+  /* ================= SLIDE 1 — TITLE ================= */
+  .slide-title { justify-content: flex-end; padding-bottom: 10vh; }
+  .slide-title h1 .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: wordIn 0.6s ease-out forwards;
+  }
+  .slide-title.active h1 .word:nth-child(1) { animation-delay: 0.1s; }
+  .slide-title.active h1 .word:nth-child(2) { animation-delay: 0.25s; }
+  .slide-title.active h1 .word:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
+
+  .slide-title .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .slide-title .subtitle .kr {
+    margin-left: 1rem;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .slide-title .title-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.4rem);
+    color: var(--kr);
+    margin-top: 1.2rem;
+    font-weight: 400;
+  }
+  .slide-title .byline {
+    margin-top: 1.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .slide-title .byline .kr-line {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+  }
+
+  .ornament {
+    position: absolute;
+    top: 50%;
+    right: 6vw;
+    transform: translateY(-50%);
+    width: 240px;
+    height: 240px;
+    opacity: 0.85;
+  }
+
+  /* ================= SLIDE 2 — RAG vs WIKI ================= */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2.5vw;
+    align-items: stretch;
+    margin-top: 1.5rem;
+  }
+  .compare-col {
+    padding: 1.6rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+  }
+  .compare-col.bad { border-color: rgba(217, 79, 42, 0.3); }
+  .compare-col.good { border-color: var(--highlight); background: rgba(245, 200, 66, 0.04); }
+  .compare-col .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .compare-col.bad .label { color: var(--accent); }
+  .compare-col.good .label { color: var(--highlight); }
+  .compare-col h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    line-height: 1.1;
+  }
+  .compare-col h4 .kr-h {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--kr);
+    margin-top: 0.2rem;
+  }
+  .compare-col p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(244, 237, 224, 0.85);
+    margin-top: 0.8rem;
+  }
+  .compare-col p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.82rem;
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+  .compare .vs {
+    align-self: center;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* ================= SLIDE 3 — KEY INSIGHT ================= */
+  .slide-insight .bi-h2 .en {
+    font-size: clamp(2rem, 4.2vw, 3.6rem);
+    max-width: 22ch;
+    line-height: 1.05;
+  }
+  .slide-insight .bi-h2 .kr {
+    font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+    max-width: 28ch;
+  }
+  .slide-insight .pull {
+    margin-top: 1.5rem;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--accent);
+    max-width: 65ch;
+  }
+  .slide-insight .pull p {
+    font-size: 1.02rem;
+    line-height: 1.5;
+    color: rgba(244,237,224,0.9);
+  }
+  .slide-insight .pull p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.92rem;
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+  .slide-insight .quote {
+    margin-top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .slide-insight .quote .kr-q {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    margin-top: 0.2rem;
+  }
+
+  /* ================= SLIDE 4 — ARCHITECTURE ================= */
+  .arch {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .arch-card {
+    padding: 1.4rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    position: relative;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+  }
+  .arch-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.8rem;
+  }
+  .arch-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    line-height: 1;
+  }
+  .arch-card .h4-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    color: var(--kr);
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+  }
+  .arch-card p {
+    font-size: 0.88rem;
+    color: rgba(244, 237, 224, 0.82);
+    line-height: 1.45;
+    flex-grow: 1;
+  }
+  .arch-card p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.78rem;
+    margin-top: 0.4rem;
+    line-height: 1.5;
+  }
+  .arch-card .badge {
+    margin-top: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .arch-card.middle {
+    background: rgba(217, 79, 42, 0.08);
+    border-color: var(--accent);
+  }
+  .flow-diagram {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .flow-arrow { color: var(--accent); margin: 0 0.6rem; }
+
+  /* ================= SLIDE 5 — OPERATIONS ================= */
+  .ops {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+    margin-top: 2rem;
+  }
+  .op {
+    border-top: 2px solid var(--accent);
+    padding-top: 1rem;
+  }
+  .op .verb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+  }
+  .op h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.1rem;
+  }
+  .op .h4-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    color: var(--kr);
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+  }
+  .op p {
+    font-size: 0.88rem;
+    color: rgba(244, 237, 224, 0.82);
+    line-height: 1.5;
+  }
+  .op p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    line-height: 1.5;
+  }
+  .ops-note {
+    margin-top: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 0.9rem;
+    line-height: 1.6;
+  }
+  .ops-note .kr-q {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    margin-top: 0.3rem;
+  }
+
+  /* ================= SLIDE 6 — INDEX + LOG ================= */
+  .files {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+  }
+  .file-block {
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .file-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+  }
+  .file-head .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .file-head .dot.r { background: #ff5f57; }
+  .file-head .dot.y { background: #febc2e; }
+  .file-head .dot.g { background: #28c840; }
+  .file-name { color: var(--paper); margin-left: 0.4rem; }
+  .file-body {
+    padding: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.65;
+    color: rgba(244,237,224,0.85);
+    white-space: pre;
+    overflow: hidden;
+  }
+  .file-body .k { color: var(--highlight); }
+  .file-body .c { color: var(--accent); }
+  .file-body .m { color: var(--muted); }
+  .file-caption {
+    margin-top: 0.8rem;
+    font-size: 0.88rem;
+    color: rgba(244,237,224,0.85);
+    line-height: 1.5;
+  }
+  .file-caption strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .file-caption .kr-c {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+
+  /* ================= SLIDE 7 — USE CASES ================= */
+  .cases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .case {
+    padding: 1.1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .case:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+  .case .glyph {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+  .case h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.05rem;
+  }
+  .case .h5-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  .case p {
+    font-size: 0.78rem;
+    color: rgba(244,237,224,0.7);
+    line-height: 1.4;
+  }
+  .case p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.74rem;
+    margin-top: 0.25rem;
+    line-height: 1.45;
+  }
+
+  /* ================= SLIDE 8 — WHY THIS WORKS ================= */
+  .why {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .why-stat {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+  }
+  .why-stat span {
+    display: block;
+    font-size: 0.18em;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--paper);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 0.8rem;
+    line-height: 1.4;
+  }
+  .why-stat .kr-stat {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.13em;
+    margin-top: 0.5rem;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+  .why-text h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+  .why-text .h2-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    color: var(--kr);
+    margin-bottom: 1.2rem;
+    font-weight: 400;
+  }
+  .why-text p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(244,237,224,0.85);
+    margin-bottom: 0.8rem;
+  }
+  .why-text p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.88rem;
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+
+  /* ================= SLIDE 9 — MEMEX ================= */
+  .memex {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .memex-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+    line-height: 1.3;
+    max-width: 24ch;
+  }
+  .memex-quote::before {
+    content: '"';
+    font-size: 4em;
+    line-height: 0;
+    vertical-align: -0.3em;
+    color: var(--accent);
+    margin-right: 0.05em;
+  }
+  .memex-quote .kr-q {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-style: normal;
+    color: var(--kr);
+    font-size: 0.65em;
+    margin-top: 1rem;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .memex-meta {
+    margin-top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .memex-right h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.3rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    margin-bottom: 0.4rem;
+  }
+  .memex-right .h2-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95rem;
+    color: var(--kr);
+    margin-bottom: 1.3rem;
+    font-weight: 400;
+  }
+  .memex-right p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(244,237,224,0.85);
+    margin-bottom: 0.6rem;
+  }
+  .memex-right p .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    line-height: 1.5;
+  }
+  .memex-right .punch {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--highlight);
+    margin-top: 0.8rem;
+  }
+  .memex-right .punch .kr-p {
+    display: block;
+    color: var(--kr);
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-top: 0.2rem;
+  }
+
+  /* ================= SLIDE 10 — TL;DR ================= */
+  .tldr {
+    border-top: 4px solid var(--accent);
+    padding-top: 1.4rem;
+    margin-top: 1rem;
+  }
+  .tldr-list {
+    list-style: none;
+    counter-reset: t;
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+  .tldr-list li {
+    counter-increment: t;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.2rem;
+    align-items: start;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .tldr-list li::before {
+    content: counter(t, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    padding-top: 0.3rem;
+  }
+  .tldr-list li strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.08rem;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .tldr-list li .kr-strong {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.84rem;
+    color: var(--kr);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+  .tldr-list li .desc {
+    color: rgba(244,237,224,0.78);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .tldr-list li .desc .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    line-height: 1.5;
+  }
+  .tldr-foot {
+    margin-top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+  }
+  .tldr-foot .kr-p {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--kr);
+    margin-top: 0.2rem;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 1.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.4rem;
+    z-index: 10;
+  }
+  .nav-dot {
+    width: 22px;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+  }
+  .nav-dot.active { background: var(--accent); }
+  .nav-dot:hover { background: rgba(255,255,255,0.4); }
+
+  .keyhint {
+    position: fixed;
+    bottom: 1.5vh;
+    right: 1.5vw;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
+  kbd {
+    display: inline-block;
+    padding: 0.1em 0.4em;
+    border: 1px solid var(--muted);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.9em;
+    margin: 0 0.1em;
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<section class="slide slide-title active" data-slide="1">
+  <div class="topbar">
+    <span><span class="dot">●</span> LECTURE / 2026</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <div class="subtitle">
+    A pattern for personal knowledge bases
+    <span class="kr">개인 지식 베이스를 위한 패턴</span>
+  </div>
+
+  <h1>
+    <span class="word">LLM</span>
+    <span class="word">Wiki.</span><br>
+    <span class="word accent">Persistence over retrieval.</span>
+  </h1>
+
+  <div class="title-kr">LLM 위키 — 검색이 아니라 영속성으로.</div>
+
+  <p class="byline">
+    // Most LLM + document workflows rediscover knowledge on every query.
+    <span class="kr-line">// 대부분의 LLM + 문서 작업은 매 쿼리마다 지식을 처음부터 다시 발견한다.</span>
+    // This pattern compiles it once, then keeps it current.
+    <span class="kr-line">// 이 패턴은 한 번 컴파일하고, 그 다음엔 최신 상태로 유지한다.</span>
+  </p>
+
+  <svg class="ornament" viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="80" stroke="#d94f2a" stroke-width="1" opacity="0.5"/>
+    <circle cx="100" cy="100" r="55" stroke="#f5c842" stroke-width="1" opacity="0.4"/>
+    <circle cx="100" cy="100" r="30" stroke="#f4ede0" stroke-width="1" opacity="0.6"/>
+    <circle cx="60" cy="60" r="4" fill="#d94f2a"/>
+    <circle cx="140" cy="80" r="4" fill="#f5c842"/>
+    <circle cx="120" cy="140" r="4" fill="#f4ede0"/>
+    <circle cx="70" cy="130" r="4" fill="#d94f2a"/>
+    <line x1="60" y1="60" x2="140" y2="80" stroke="#f4ede0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="140" y1="80" x2="120" y2="140" stroke="#f4ede0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="120" y1="140" x2="70" y2="130" stroke="#f4ede0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="70" y1="130" x2="60" y2="60" stroke="#f4ede0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="60" y1="60" x2="120" y2="140" stroke="#f4ede0" stroke-width="0.5" opacity="0.2"/>
+  </svg>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">01 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2: RAG VS WIKI ============ -->
+<section class="slide" data-slide="2">
+  <div class="topbar">
+    <span><span class="dot">●</span> THE PROBLEM · 문제</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 01. the problem with RAG · RAG의 한계</h3>
+  <div class="bi-h2">
+    <span class="en">Retrieval forgets. Wikis <span class="accent">remember</span>.</span>
+    <span class="kr">검색은 잊는다. 위키는 <span class="accent" style="font-weight:500;">기억한다</span>.</span>
+  </div>
+
+  <div class="compare">
+    <div class="compare-col bad">
+      <div class="label">// Standard RAG · 표준 RAG</div>
+      <h4 class="strike">
+        Stateless retrieval
+        <span class="kr-h">상태 없는 검색</span>
+      </h4>
+      <p>
+        Upload docs → retrieve chunks at query time → generate answer.
+        <span class="kr-p">문서 업로드 → 쿼리 시점에 청크 검색 → 답변 생성.</span>
+      </p>
+      <p>
+        The LLM rediscovers the knowledge graph from scratch on every question. <strong>Nothing accumulates.</strong>
+        <span class="kr-p">LLM은 매 질문마다 지식 그래프를 처음부터 다시 발견한다. <strong>아무것도 쌓이지 않는다.</strong></span>
+      </p>
+    </div>
+
+    <div class="vs">VS</div>
+
+    <div class="compare-col good">
+      <div class="label">// LLM Wiki · LLM 위키</div>
+      <h4>
+        Persistent compilation
+        <span class="kr-h">영속적 컴파일</span>
+      </h4>
+      <p>
+        New source → LLM reads it, integrates into a markdown wiki: updates entity pages, revises summaries, flags contradictions.
+        <span class="kr-p">새 소스 → LLM이 읽고 마크다운 위키에 통합: 엔티티 페이지 업데이트, 요약 수정, 모순 표시.</span>
+      </p>
+      <p>
+        The wiki is a <span class="highlight">compounding artifact.</span>
+        <span class="kr-p">위키는 <span style="color:var(--paper);">복리로 쌓이는 자산</span>이다.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">02 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 3: KEY INSIGHT ============ -->
+<section class="slide slide-insight" data-slide="3">
+  <div class="topbar">
+    <span><span class="dot">●</span> THE INSIGHT · 핵심 통찰</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 02. the core idea · 핵심 아이디어</h3>
+  <div class="bi-h2">
+    <span class="en">
+      Knowledge is <span class="accent">compiled once</span> and <span class="highlight">kept current</span>—not re-derived on every query.
+    </span>
+    <span class="kr">
+      지식은 <span class="accent" style="font-weight:500;">한 번 컴파일</span>되고 <span style="background:linear-gradient(transparent 60%,rgba(245,200,66,0.35) 60%);padding:0 0.1em;color:var(--paper);">최신으로 유지</span>된다 — 매 쿼리마다 다시 도출하지 않는다.
+    </span>
+  </div>
+
+  <div class="pull">
+    <p>
+      You curate sources. You ask questions. The LLM does the bookkeeping: summarizing, cross-referencing, filing, reconciling contradictions across pages.
+      <span class="kr-p">당신은 소스를 큐레이션하고, 질문을 던진다. LLM은 잡일을 한다: 요약, 상호 참조, 분류, 페이지 간 모순 정리.</span>
+    </p>
+  </div>
+
+  <div class="quote">
+    &gt; Obsidian is the IDE. The LLM is the programmer. The wiki is the codebase.
+    <span class="kr-q">&gt; Obsidian은 IDE. LLM은 프로그래머. 위키는 코드베이스.</span>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">03 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 4: ARCHITECTURE ============ -->
+<section class="slide" data-slide="4">
+  <div class="topbar">
+    <span><span class="dot">●</span> ARCHITECTURE · 아키텍처</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 03. three layers · 세 개의 레이어</h3>
+  <div class="bi-h2">
+    <span class="en">The stack.</span>
+    <span class="kr">스택 구조.</span>
+  </div>
+
+  <div class="arch">
+    <div class="arch-card">
+      <div class="num">L1 / IMMUTABLE · 불변</div>
+      <h4>Raw sources</h4>
+      <div class="h4-kr">원본 소스</div>
+      <p>
+        Curated docs, articles, papers, images. The LLM reads but never modifies. Source of truth.
+        <span class="kr-p">큐레이션된 문서, 기사, 논문, 이미지. LLM이 읽기만 하고 수정하지 않음. 진실의 원천.</span>
+      </p>
+      <div class="badge">read-only · 읽기 전용</div>
+    </div>
+
+    <div class="arch-card middle">
+      <div class="num">L2 / GENERATED · 생성</div>
+      <h4>The wiki</h4>
+      <div class="h4-kr">위키</div>
+      <p>
+        LLM-generated markdown: entity pages, concept pages, summaries. The LLM owns this layer. You read; it writes.
+        <span class="kr-p">LLM이 생성한 마크다운: 엔티티/개념 페이지, 요약. LLM이 이 레이어를 소유. 사람은 읽고, LLM이 쓴다.</span>
+      </p>
+      <div class="badge">read + write (LLM) · LLM이 쓰기</div>
+    </div>
+
+    <div class="arch-card">
+      <div class="num">L3 / CONFIG · 설정</div>
+      <h4>The schema</h4>
+      <div class="h4-kr">스키마</div>
+      <p>
+        <span class="mono">CLAUDE.md</span> / <span class="mono">AGENTS.md</span>. Structure, conventions, workflows. Co-evolved over time.
+        <span class="kr-p"><span class="mono">CLAUDE.md</span> / <span class="mono">AGENTS.md</span>. 구조·컨벤션·워크플로우. 시간이 지나며 함께 진화.</span>
+      </p>
+      <div class="badge">human + LLM · 사람 + LLM</div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <span>raw/</span>
+    <span class="flow-arrow">───→</span>
+    <span style="color: var(--accent);">[ schema ]</span>
+    <span class="flow-arrow">───→</span>
+    <span style="color: var(--highlight);">wiki/</span>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">04 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 5: OPERATIONS ============ -->
+<section class="slide" data-slide="5">
+  <div class="topbar">
+    <span><span class="dot">●</span> OPERATIONS · 작업</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 04. three verbs · 세 개의 동사</h3>
+  <div class="bi-h2">
+    <span class="en">How you work the wiki.</span>
+    <span class="kr">위키를 다루는 방식.</span>
+  </div>
+
+  <div class="ops">
+    <div class="op">
+      <div class="verb">verb_01</div>
+      <h4>Ingest</h4>
+      <div class="h4-kr">적재</div>
+      <p>
+        Drop a source in <span class="mono">raw/</span>. The LLM reads, discusses takeaways, writes a summary, updates the index, touches 10–15 related pages, appends to the log.
+        <span class="kr-p"><span class="mono">raw/</span>에 소스를 놓는다. LLM이 읽고, 시사점을 논의하고, 요약을 작성하고, 인덱스를 업데이트하고, 관련 페이지 10~15개를 손보고, 로그에 추가한다.</span>
+      </p>
+    </div>
+
+    <div class="op">
+      <div class="verb">verb_02</div>
+      <h4>Query</h4>
+      <div class="h4-kr">쿼리</div>
+      <p>
+        Ask questions. Answers come as pages, tables, slide decks, charts. <strong>Good answers get filed back.</strong>
+        <span class="kr-p">질문을 던진다. 답변은 페이지·표·슬라이드·차트로 나온다. <strong>좋은 답변은 다시 위키에 정리해 넣는다.</strong></span>
+      </p>
+    </div>
+
+    <div class="op">
+      <div class="verb">verb_03</div>
+      <h4>Lint</h4>
+      <div class="h4-kr">린트</div>
+      <p>
+        Periodic health checks. Find contradictions, stale claims, orphan pages, missing cross-refs.
+        <span class="kr-p">주기적 건강 검진. 모순, 오래된 주장, 고아 페이지, 누락된 상호 참조를 찾는다.</span>
+      </p>
+    </div>
+  </div>
+
+  <p class="ops-note">
+    &gt; A single ingest can touch ~15 pages. Humans abandon wikis at this maintenance cost. LLMs don't.
+    <span class="kr-q">&gt; 한 번의 적재로 페이지 15개가 바뀐다. 사람은 이 유지비용에 위키를 포기한다. LLM은 안 한다.</span>
+  </p>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">05 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6: INDEX + LOG ============ -->
+<section class="slide" data-slide="6">
+  <div class="topbar">
+    <span><span class="dot">●</span> NAVIGATION FILES · 탐색용 파일</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 05. two special files · 두 개의 특수 파일</h3>
+  <div class="bi-h2">
+    <span class="en"><span class="mono" style="font-size: 0.75em;">index.md</span> &amp; <span class="mono" style="font-size: 0.75em;">log.md</span></span>
+    <span class="kr">콘텐츠 카탈로그와 시간순 기록.</span>
+  </div>
+
+  <div class="files">
+    <div>
+      <div class="file-block">
+        <div class="file-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="file-name">index.md</span>
+        </div>
+<div class="file-body"><span class="k"># Wiki Index</span>
+
+<span class="c">## Entities</span>
+- [[Vannevar Bush]] — Memex inventor
+- [[Tolkien Gateway]] — fan-wiki ref
+
+<span class="c">## Concepts</span>
+- [[Compounding artifacts]]
+- [[Persistent retrieval]]
+
+<span class="c">## Sources</span>
+- [[src-001-memex-1945]]
+<span class="m">  ...</span>
+</div>
+      </div>
+      <p class="file-caption">
+        <strong>// content-oriented · 콘텐츠 지향</strong>
+        Catalog of every page. Read first when answering — drill in from there. Works at hundreds of pages without embeddings.
+        <span class="kr-c">모든 페이지의 카탈로그. 답변할 때 먼저 읽고 그 다음 들어간다. 수백 페이지 규모까지 임베딩 없이 작동.</span>
+      </p>
+    </div>
+
+    <div>
+      <div class="file-block">
+        <div class="file-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="file-name">log.md</span>
+        </div>
+<div class="file-body"><span class="k">## [2026-04-02] ingest</span>
+| Memex paper (Bush, 1945)
+<span class="m">  → updated 12 pages</span>
+
+<span class="k">## [2026-04-03] query</span>
+| compare RAG vs wiki
+<span class="m">  → filed as new page</span>
+
+<span class="k">## [2026-04-05] lint</span>
+| 3 orphans, 2 contradictions
+<span class="m">  ...</span>
+</div>
+      </div>
+      <p class="file-caption">
+        <strong>// chronological · 시간순</strong>
+        Append-only timeline. Consistent prefixes make it grep-able: <span class="mono">grep "^## \[" log.md | tail</span>
+        <span class="kr-c">추가 전용 타임라인. 일관된 접두사 덕에 grep 가능: <span class="mono">grep "^## \[" log.md | tail</span></span>
+      </p>
+    </div>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">06 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 7: USE CASES ============ -->
+<section class="slide" data-slide="7">
+  <div class="topbar">
+    <span><span class="dot">●</span> APPLICATIONS · 적용 사례</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 06. where this fits · 어디에 맞는가</h3>
+  <div class="bi-h2">
+    <span class="en">Anywhere knowledge accumulates.</span>
+    <span class="kr">지식이 쌓이는 모든 곳.</span>
+  </div>
+
+  <div class="cases">
+    <div class="case">
+      <div class="glyph">[01]</div>
+      <h5>Personal</h5>
+      <div class="h5-kr">개인용</div>
+      <p>
+        Goals, journaling, self-tracking.
+        <span class="kr-p">목표, 일기, 자기 추적.</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="glyph">[02]</div>
+      <h5>Research</h5>
+      <div class="h5-kr">연구</div>
+      <p>
+        Months on a topic. Papers in, evolving thesis out.
+        <span class="kr-p">한 주제를 몇 달간. 논문 입력, 진화하는 논지 출력.</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="glyph">[03]</div>
+      <h5>Reading a book</h5>
+      <div class="h5-kr">책 읽기</div>
+      <p>
+        File chapters as you go. End up with a personal companion wiki.
+        <span class="kr-p">읽으며 챕터를 정리. 개인 동반 위키 완성.</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="glyph">[04]</div>
+      <h5>Team / business</h5>
+      <div class="h5-kr">팀 / 비즈니스</div>
+      <p>
+        Internal wiki fed by Slack, meetings, calls. Stays current.
+        <span class="kr-p">Slack·회의·통화로 피딩되는 사내 위키. 항상 최신.</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="glyph">[05]</div>
+      <h5>Due diligence</h5>
+      <div class="h5-kr">실사 / 분석</div>
+      <p>
+        Competitive analysis, investment research. Every doc compounds.
+        <span class="kr-p">경쟁 분석, 투자 리서치. 모든 문서가 복리로.</span>
+      </p>
+    </div>
+    <div class="case">
+      <div class="glyph">[06]</div>
+      <h5>Anything that grows</h5>
+      <div class="h5-kr">자라나는 모든 것</div>
+      <p>
+        Course notes, hobby deep-dives, trip planning.
+        <span class="kr-p">강의 노트, 취미 심화, 여행 계획.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">07 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 8: WHY IT WORKS ============ -->
+<section class="slide" data-slide="8">
+  <div class="topbar">
+    <span><span class="dot">●</span> THE LEVERAGE · 레버리지</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 07. why this works · 왜 작동하는가</h3>
+
+  <div class="why">
+    <div>
+      <div class="why-stat">
+        ~0
+        <span>marginal cost of maintenance</span>
+        <span class="kr-stat">유지보수의 한계 비용</span>
+      </div>
+    </div>
+
+    <div class="why-text">
+      <h2>The tedium isn't reading. It's <span class="accent">bookkeeping</span>.</h2>
+      <div class="h2-kr">지루한 건 읽기가 아니다. <span class="accent" style="font-weight:500;">잡일 처리</span>다.</div>
+      <p>
+        Updating cross-refs. Keeping summaries current. Noting contradictions across dozens of pages.
+        <span class="kr-p">상호 참조 업데이트. 요약 최신화. 수십 페이지에 걸친 모순 표시.</span>
+      </p>
+      <p>
+        Humans abandon wikis when maintenance cost outpaces value.<br>
+        <strong>LLMs don't get bored.</strong>
+        <span class="kr-p">사람은 유지비용이 가치를 추월하면 위키를 포기한다.<br><strong>LLM은 지루해하지 않는다.</strong></span>
+      </p>
+    </div>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">08 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 9: MEMEX ============ -->
+<section class="slide" data-slide="9">
+  <div class="topbar">
+    <span><span class="dot">●</span> LINEAGE · 계보</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 08. an old idea, finally workable · 오래된 아이디어, 드디어 실현</h3>
+
+  <div class="memex">
+    <div>
+      <div class="memex-quote">
+        A personal, curated knowledge store with associative trails between documents.
+        <span class="kr-q">문서 사이에 연관 경로가 있는 개인적이고 큐레이션된 지식 저장소. 연결이 문서만큼 중요하다.</span>
+      </div>
+      <div class="memex-meta">— Vannevar Bush, "As We May Think" (1945)</div>
+    </div>
+
+    <div class="memex-right">
+      <h2>Bush's Memex. <span class="accent">Solved.</span></h2>
+      <div class="h2-kr">부시의 Memex. <span class="accent" style="font-weight:500;">해결됨.</span></div>
+      <p>
+        Bush couldn't answer one question: <em>who maintains the trails?</em>
+        <span class="kr-p">부시가 답하지 못한 질문 하나: <em>누가 경로를 유지할 것인가?</em></span>
+      </p>
+      <div class="punch">
+        &gt; The LLM does.
+        <span class="kr-p">&gt; LLM이 한다.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="botbar">
+    <span>// notes for engineers · 엔지니어를 위한 노트</span>
+    <span class="pageno">09 / 10</span>
+  </div>
+</section>
+
+<!-- ============ SLIDE 10: TL;DR ============ -->
+<section class="slide" data-slide="10">
+  <div class="topbar">
+    <span><span class="dot">●</span> TAKEAWAYS · 핵심 정리</span>
+    <span>llm-wiki-pattern</span>
+  </div>
+
+  <h3>// 09. tl;dr · 한 줄 요약</h3>
+  <div class="bi-h2">
+    <span class="en">What to remember.</span>
+    <span class="kr">기억할 것들.</span>
+  </div>
+
+  <div class="tldr">
+    <ol class="tldr-list">
+      <li>
+        <div>
+          <strong>RAG retrieves. Wikis accumulate.</strong>
+          <span class="kr-strong">RAG는 검색하고, 위키는 쌓는다.</span>
+          <span class="desc">
+            Stop re-deriving knowledge. Compile once, keep current.
+            <span class="kr-p">지식을 매번 다시 도출하지 마라. 한 번 컴파일하고 최신으로 유지하라.</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>The LLM owns the wiki layer.</strong>
+          <span class="kr-strong">위키 레이어는 LLM의 것이다.</span>
+          <span class="desc">
+            You curate sources and ask questions. The LLM writes, links, lints.
+            <span class="kr-p">사람은 소스를 큐레이션하고 질문한다. LLM은 쓰고, 잇고, 점검한다.</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Three verbs: ingest, query, lint.</strong>
+          <span class="kr-strong">세 동사: 적재 · 쿼리 · 린트.</span>
+          <span class="desc">
+            Good answers file themselves back — explorations compound.
+            <span class="kr-p">좋은 답변은 위키에 다시 정리된다 — 탐구도 복리로 쌓인다.</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>It's just markdown in a git repo.</strong>
+          <span class="kr-strong">결국 git 저장소의 마크다운일 뿐.</span>
+          <span class="desc">
+            Version control, branching, diffing — for free. Tools are optional.
+            <span class="kr-p">버전 관리·브랜칭·diff — 공짜. 도구는 선택사항.</span>
+          </span>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <p class="tldr-foot">
+    &gt; Pattern, not product. Hand this idea to your agent and instantiate your own.
+    <span class="kr-p">&gt; 제품이 아니라 패턴. 에이전트에게 넘기고, 당신만의 버전을 만들어라.</span>
+  </p>
+
+  <div class="botbar">
+    <span>// thanks · 감사합니다</span>
+    <span class="pageno">10 / 10</span>
+  </div>
+</section>
+
+</div>
+
+<nav class="nav" id="nav"></nav>
+<div class="keyhint"><kbd>←</kbd><kbd>→</kbd> navigate · 탐색</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const nav = document.getElementById('nav');
+  let idx = 0;
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    b.addEventListener('click', () => go(i));
+    nav.appendChild(b);
+  });
+
+  function go(n) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    slides[idx].classList.remove('active');
+    nav.children[idx].classList.remove('active');
+    idx = n;
+    slides[idx].classList.add('active');
+    nav.children[idx].classList.add('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') go(idx + 1);
+    if (e.key === 'ArrowLeft') go(idx - 1);
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('.nav') || e.target.closest('.keyhint')) return;
+    go(idx + 1);
+  });
+</script>
+</body>
+</html>

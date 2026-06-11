@@ -1,0 +1,327 @@
+{
+    "claude-code-cheat-sheet": {
+        "images": [
+            "/originals/claude-code-cheat-sheet/page-1.webp"
+        ],
+        "pdf": "/originals/claude-code-cheat-sheet/original.pdf"
+    },
+    "claude_agent": {
+        "images": [
+            "/originals/claude_agent/page-1.webp",
+            "/originals/claude_agent/page-2.webp",
+            "/originals/claude_agent/page-3.webp",
+            "/originals/claude_agent/page-4.webp"
+        ]
+    },
+    "claude_agent_team": {
+        "images": [
+            "/originals/claude_agent_team/page-1.webp",
+            "/originals/claude_agent_team/page-2.webp",
+            "/originals/claude_agent_team/page-3.webp",
+            "/originals/claude_agent_team/page-4.webp",
+            "/originals/claude_agent_team/page-5.webp",
+            "/originals/claude_agent_team/page-6.webp",
+            "/originals/claude_agent_team/page-7.webp",
+            "/originals/claude_agent_team/page-8.webp",
+            "/originals/claude_agent_team/page-9.webp",
+            "/originals/claude_agent_team/page-10.webp",
+            "/originals/claude_agent_team/page-11.webp",
+            "/originals/claude_agent_team/page-12.webp"
+        ]
+    },
+    "claude_auto_memory": {
+        "images": [
+            "/originals/claude_auto_memory/page-1.webp",
+            "/originals/claude_auto_memory/page-2.webp",
+            "/originals/claude_auto_memory/page-3.webp",
+            "/originals/claude_auto_memory/page-4.webp",
+            "/originals/claude_auto_memory/page-5.webp"
+        ]
+    },
+    "claude_bash_command": {
+        "images": [
+            "/originals/claude_bash_command/page-1.webp",
+            "/originals/claude_bash_command/page-2.webp",
+            "/originals/claude_bash_command/page-3.webp",
+            "/originals/claude_bash_command/page-4.webp",
+            "/originals/claude_bash_command/page-5.webp"
+        ]
+    },
+    "claude_batch": {
+        "images": [
+            "/originals/claude_batch/page-1.webp",
+            "/originals/claude_batch/page-2.webp",
+            "/originals/claude_batch/page-3.webp",
+            "/originals/claude_batch/page-4.webp",
+            "/originals/claude_batch/page-5.webp",
+            "/originals/claude_batch/page-6.webp",
+            "/originals/claude_batch/page-7.webp",
+            "/originals/claude_batch/page-8.webp"
+        ]
+    },
+    "claude_channel": {
+        "images": [
+            "/originals/claude_channel/page-1.webp",
+            "/originals/claude_channel/page-2.webp",
+            "/originals/claude_channel/page-3.webp",
+            "/originals/claude_channel/page-4.webp",
+            "/originals/claude_channel/page-5.webp",
+            "/originals/claude_channel/page-6.webp",
+            "/originals/claude_channel/page-7.webp",
+            "/originals/claude_channel/page-8.webp"
+        ]
+    },
+    "claude_cmd_init": {
+        "images": [
+            "/originals/claude_cmd_init/page-1.webp",
+            "/originals/claude_cmd_init/page-2.webp",
+            "/originals/claude_cmd_init/page-3.webp",
+            "/originals/claude_cmd_init/page-4.webp",
+            "/originals/claude_cmd_init/page-5.webp"
+        ]
+    },
+    "claude_context_eng_cmd": {
+        "images": [
+            "/originals/claude_context_eng_cmd/page-1.webp",
+            "/originals/claude_context_eng_cmd/page-2.webp",
+            "/originals/claude_context_eng_cmd/page-3.webp",
+            "/originals/claude_context_eng_cmd/page-4.webp",
+            "/originals/claude_context_eng_cmd/page-5.webp",
+            "/originals/claude_context_eng_cmd/page-6.webp",
+            "/originals/claude_context_eng_cmd/page-7.webp",
+            "/originals/claude_context_eng_cmd/page-8.webp"
+        ]
+    },
+    "claude_context_engineering": {
+        "images": [
+            "/originals/claude_context_engineering/page-1.webp",
+            "/originals/claude_context_engineering/page-2.webp",
+            "/originals/claude_context_engineering/page-3.webp",
+            "/originals/claude_context_engineering/page-4.webp",
+            "/originals/claude_context_engineering/page-5.webp",
+            "/originals/claude_context_engineering/page-6.webp",
+            "/originals/claude_context_engineering/page-7.webp",
+            "/originals/claude_context_engineering/page-8.webp",
+            "/originals/claude_context_engineering/page-9.webp",
+            "/originals/claude_context_engineering/page-10.webp",
+            "/originals/claude_context_engineering/page-11.webp",
+            "/originals/claude_context_engineering/page-12.webp"
+        ]
+    },
+    "claude_debugging": {
+        "images": [
+            "/originals/claude_debugging/page-1.webp",
+            "/originals/claude_debugging/page-2.webp",
+            "/originals/claude_debugging/page-3.webp"
+        ]
+    },
+    "claude_harness": {
+        "images": [
+            "/originals/claude_harness/page-1.webp",
+            "/originals/claude_harness/page-2.webp",
+            "/originals/claude_harness/page-3.webp",
+            "/originals/claude_harness/page-4.webp",
+            "/originals/claude_harness/page-5.webp",
+            "/originals/claude_harness/page-6.webp",
+            "/originals/claude_harness/page-7.webp",
+            "/originals/claude_harness/page-8.webp",
+            "/originals/claude_harness/page-9.webp",
+            "/originals/claude_harness/page-10.webp",
+            "/originals/claude_harness/page-11.webp"
+        ]
+    },
+    "claude_hooks": {
+        "images": [
+            "/originals/claude_hooks/page-1.webp",
+            "/originals/claude_hooks/page-2.webp",
+            "/originals/claude_hooks/page-3.webp",
+            "/originals/claude_hooks/page-4.webp",
+            "/originals/claude_hooks/page-5.webp"
+        ]
+    },
+    "claude_intro": {
+        "images": [
+            "/originals/claude_intro/page-1.webp",
+            "/originals/claude_intro/page-2.webp",
+            "/originals/claude_intro/page-3.webp",
+            "/originals/claude_intro/page-4.webp",
+            "/originals/claude_intro/page-5.webp",
+            "/originals/claude_intro/page-6.webp",
+            "/originals/claude_intro/page-7.webp",
+            "/originals/claude_intro/page-8.webp",
+            "/originals/claude_intro/page-9.webp",
+            "/originals/claude_intro/page-10.webp"
+        ]
+    },
+    "claude_mcp_cmd": {
+        "images": [
+            "/originals/claude_mcp_cmd/page-1.webp",
+            "/originals/claude_mcp_cmd/page-2.webp",
+            "/originals/claude_mcp_cmd/page-3.webp",
+            "/originals/claude_mcp_cmd/page-4.webp",
+            "/originals/claude_mcp_cmd/page-5.webp",
+            "/originals/claude_mcp_cmd/page-6.webp",
+            "/originals/claude_mcp_cmd/page-7.webp",
+            "/originals/claude_mcp_cmd/page-8.webp"
+        ]
+    },
+    "claude_mcp_skills": {
+        "images": [
+            "/originals/claude_mcp_skills/page-1.webp",
+            "/originals/claude_mcp_skills/page-2.webp",
+            "/originals/claude_mcp_skills/page-3.webp"
+        ]
+    },
+    "claude_memory": {
+        "images": [
+            "/originals/claude_memory/page-1.webp",
+            "/originals/claude_memory/page-2.webp",
+            "/originals/claude_memory/page-3.webp",
+            "/originals/claude_memory/page-4.webp",
+            "/originals/claude_memory/page-5.webp",
+            "/originals/claude_memory/page-6.webp",
+            "/originals/claude_memory/page-7.webp",
+            "/originals/claude_memory/page-8.webp",
+            "/originals/claude_memory/page-9.webp",
+            "/originals/claude_memory/page-10.webp"
+        ]
+    },
+    "claude_model_cost_cmd": {
+        "images": [
+            "/originals/claude_model_cost_cmd/page-1.webp",
+            "/originals/claude_model_cost_cmd/page-2.webp",
+            "/originals/claude_model_cost_cmd/page-3.webp",
+            "/originals/claude_model_cost_cmd/page-4.webp",
+            "/originals/claude_model_cost_cmd/page-5.webp",
+            "/originals/claude_model_cost_cmd/page-6.webp"
+        ]
+    },
+    "claude_ollama": {
+        "images": [
+            "/originals/claude_ollama/page-1.webp",
+            "/originals/claude_ollama/page-2.webp",
+            "/originals/claude_ollama/page-3.webp"
+        ]
+    },
+    "claude_opus4.8": {
+        "images": [
+            "/originals/claude_opus4.8/page-1.webp",
+            "/originals/claude_opus4.8/page-2.webp",
+            "/originals/claude_opus4.8/page-3.webp",
+            "/originals/claude_opus4.8/page-4.webp",
+            "/originals/claude_opus4.8/page-5.webp",
+            "/originals/claude_opus4.8/page-6.webp"
+        ]
+    },
+    "claude_output_style": {
+        "images": [
+            "/originals/claude_output_style/page-1.webp",
+            "/originals/claude_output_style/page-2.webp",
+            "/originals/claude_output_style/page-3.webp",
+            "/originals/claude_output_style/page-4.webp",
+            "/originals/claude_output_style/page-5.webp",
+            "/originals/claude_output_style/page-6.webp",
+            "/originals/claude_output_style/page-7.webp",
+            "/originals/claude_output_style/page-8.webp"
+        ]
+    },
+    "claude_permissions": {
+        "images": [
+            "/originals/claude_permissions/page-1.webp",
+            "/originals/claude_permissions/page-2.webp",
+            "/originals/claude_permissions/page-3.webp",
+            "/originals/claude_permissions/page-4.webp",
+            "/originals/claude_permissions/page-5.webp",
+            "/originals/claude_permissions/page-6.webp",
+            "/originals/claude_permissions/page-7.webp",
+            "/originals/claude_permissions/page-8.webp",
+            "/originals/claude_permissions/page-9.webp"
+        ]
+    },
+    "claude_plugin": {
+        "images": [
+            "/originals/claude_plugin/page-1.webp",
+            "/originals/claude_plugin/page-2.webp",
+            "/originals/claude_plugin/page-3.webp",
+            "/originals/claude_plugin/page-4.webp",
+            "/originals/claude_plugin/page-5.webp",
+            "/originals/claude_plugin/page-6.webp",
+            "/originals/claude_plugin/page-7.webp",
+            "/originals/claude_plugin/page-8.webp",
+            "/originals/claude_plugin/page-9.webp"
+        ]
+    },
+    "claude_ralph": {
+        "images": [
+            "/originals/claude_ralph/page-1.webp",
+            "/originals/claude_ralph/page-2.webp",
+            "/originals/claude_ralph/page-3.webp",
+            "/originals/claude_ralph/page-4.webp",
+            "/originals/claude_ralph/page-5.webp",
+            "/originals/claude_ralph/page-6.webp"
+        ]
+    },
+    "claude_rewind": {
+        "images": [
+            "/originals/claude_rewind/page-1.webp",
+            "/originals/claude_rewind/page-2.webp",
+            "/originals/claude_rewind/page-3.webp",
+            "/originals/claude_rewind/page-4.webp",
+            "/originals/claude_rewind/page-5.webp",
+            "/originals/claude_rewind/page-6.webp"
+        ]
+    },
+    "claude_simplify": {
+        "images": [
+            "/originals/claude_simplify/page-1.webp",
+            "/originals/claude_simplify/page-2.webp",
+            "/originals/claude_simplify/page-3.webp",
+            "/originals/claude_simplify/page-4.webp",
+            "/originals/claude_simplify/page-5.webp"
+        ]
+    },
+    "claude_skills_command": {
+        "images": [
+            "/originals/claude_skills_command/page-1.webp",
+            "/originals/claude_skills_command/page-2.webp",
+            "/originals/claude_skills_command/page-3.webp",
+            "/originals/claude_skills_command/page-4.webp",
+            "/originals/claude_skills_command/page-5.webp",
+            "/originals/claude_skills_command/page-6.webp",
+            "/originals/claude_skills_command/page-7.webp",
+            "/originals/claude_skills_command/page-8.webp",
+            "/originals/claude_skills_command/page-9.webp"
+        ]
+    },
+    "claude_subagent": {
+        "images": [
+            "/originals/claude_subagent/page-1.webp",
+            "/originals/claude_subagent/page-2.webp",
+            "/originals/claude_subagent/page-3.webp",
+            "/originals/claude_subagent/page-4.webp",
+            "/originals/claude_subagent/page-5.webp",
+            "/originals/claude_subagent/page-6.webp",
+            "/originals/claude_subagent/page-7.webp",
+            "/originals/claude_subagent/page-8.webp"
+        ]
+    },
+    "claude_vercel_intro": {
+        "images": [
+            "/originals/claude_vercel_intro/page-1.webp",
+            "/originals/claude_vercel_intro/page-2.webp",
+            "/originals/claude_vercel_intro/page-3.webp",
+            "/originals/claude_vercel_intro/page-4.webp",
+            "/originals/claude_vercel_intro/page-5.webp",
+            "/originals/claude_vercel_intro/page-6.webp",
+            "/originals/claude_vercel_intro/page-7.webp",
+            "/originals/claude_vercel_intro/page-8.webp",
+            "/originals/claude_vercel_intro/page-9.webp",
+            "/originals/claude_vercel_intro/page-10.webp",
+            "/originals/claude_vercel_intro/page-11.webp"
+        ]
+    },
+    "llm-wiki-slides": {
+        "images": [],
+        "html": "/originals/llm-wiki-slides/original.html"
+    }
+}

@@ -193,11 +193,40 @@ export async function getCommits(s: Student, limit = 20): Promise<Commit[]> {
 }
 
 // ── 학습자료 (CLAUDE_BASIC/한글정리) ───────────────────────
+// 클로드 코드 공식 문서(code.claude.com/docs) 목차 순서를 따른 섹션 배치
+export const MATERIAL_SECTIONS: { title: string; slugs: string[] }[] = [
+  { title: "시작하기", slugs: ["claude_intro", "claude-code-cheat-sheet", "claude_cmd_init", "claude_harness"] },
+  { title: "기본 사용법", slugs: ["claude_bash_command", "claude_rewind", "claude_model_cost_cmd", "claude_output_style"] },
+  { title: "메모리 · 컨텍스트", slugs: ["claude_memory", "claude_auto_memory", "claude_context_eng_cmd", "claude_context_engineering"] },
+  { title: "설정 · 권한 · 자동화 (Hooks)", slugs: ["claude_permissions", "claude_hooks"] },
+  { title: "확장하기 — 스킬 · MCP · 플러그인", slugs: ["claude_skills_command", "claude_mcp_cmd", "claude_mcp_skills", "claude_plugin"] },
+  { title: "에이전트", slugs: ["claude_agent", "claude_subagent", "claude_agent_team", "claude_batch", "claude_channel"] },
+  { title: "고급 활용 · 기타", slugs: ["claude_ralph", "claude_simplify", "claude_debugging", "llm-wiki-slides", "claude_opus4.8", "claude_ollama", "claude_vercel_intro"] },
+];
+
+export interface OriginalAsset {
+  images: string[];
+  pdf?: string;
+  html?: string;
+}
+
+// 원본 자료(PDF→이미지 변환본, PDF 원본, HTML) 매니페스트 — scripts/convert-originals.sh가 생성
+export function getOriginals(): Record<string, OriginalAsset> {
+  try {
+    return JSON.parse(readSafe(path.join(process.cwd(), "public", "originals", "manifest.json")));
+  } catch {
+    return {};
+  }
+}
+
 export interface Material {
   slug: string;
   title: string;
   difficulty: string;
   content: string;
+  section: string;
+  order: number;
+  original?: OriginalAsset;
 }
 
 export function getMaterials(): Material[] {
@@ -207,12 +236,24 @@ export function getMaterials(): Material[] {
   } catch {
     return [];
   }
-  return files.map((f) => {
-    const content = readSafe(path.join(MATERIALS_DIR, f));
-    const title = content.split("\n")[0]?.replace(/^#\s*/, "") ?? f;
-    const difficulty = content.match(/★[★☆]*/)?.[0] ?? "";
-    return { slug: f.replace(/\.md$/, ""), title, difficulty, content };
-  });
+  const originals = getOriginals();
+  const orderMap = new Map<string, { order: number; section: string }>();
+  let i = 0;
+  for (const sec of MATERIAL_SECTIONS) {
+    for (const slug of sec.slugs) {
+      orderMap.set(slug, { order: i++, section: sec.title });
+    }
+  }
+  return files
+    .map((f) => {
+      const content = readSafe(path.join(MATERIALS_DIR, f));
+      const title = content.split("\n")[0]?.replace(/^#\s*/, "") ?? f;
+      const difficulty = content.match(/★[★☆]*/)?.[0] ?? "";
+      const slug = f.replace(/\.md$/, "");
+      const pos = orderMap.get(slug) ?? { order: 999, section: "기타" };
+      return { slug, title, difficulty, content, section: pos.section, order: pos.order, original: originals[slug] };
+    })
+    .sort((a, b) => a.order - b.order);
 }
 
 export function getMaterial(slug: string): Material | undefined {
