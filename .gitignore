@@ -2,8 +2,9 @@
 first/
 first-commit/
 
-# 선생님 버전 (별도 fork 저장소 SeoBoSeok/first-teacher)
+# 선생님 버전 (별도 fork 저장소 SeoBoSeok/first-teacher, first-commit-teacher)
 first-teacher/
+first-commit-teacher/
 
 # 대용량·수업 외 자료 (로컬 전용)
 2026_claude_lecture_pamforest/
