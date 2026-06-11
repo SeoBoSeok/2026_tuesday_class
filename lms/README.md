@@ -19,11 +19,19 @@
 
 ## 웹 LMS (학생용 화면)
 
-`../lms-web/`의 Next.js 앱이 이 폴더의 마크다운을 실시간으로 읽어 보여준다:
+**🌐 배포 주소 (학생 공유용): https://lms-web-henna-six.vercel.app**
+
+`../lms-web/`의 Next.js 앱이 이 폴더의 마크다운을 읽어 보여준다.
 
 ```bash
-cd ../lms-web && npm run dev   # → http://localhost:3100
+cd ../lms-web && npm run dev      # 로컬 실행 → http://localhost:3100
+cd ../lms-web && npm run deploy   # 배포 갱신 (lms/ 변경분을 data/로 복사 후 Vercel 프로덕션 배포)
 ```
+
+배포 구조: 읽기 데이터(질문·카드·진도·자료·퀴즈)는 파일로 함께 배포되고,
+퀴즈 결과만 Vercel Blob(lms-quiz-results 저장소)에 저장된다.
+**수업에서 lms/ 마크다운을 수정한 뒤에는 `npm run deploy`를 해야 웹에 반영된다.**
+저장소: https://github.com/SeoBoSeok/2026_tuesday_class (커밋·푸시는 기록 보관용)
 
 - **대시보드**: 진도·복습 알림·최근 질문 한눈에
 - **학생 페이지**: 프로젝트 발전 타임라인(git 커밋), 퀴즈 성적, 다지는 중인 개념

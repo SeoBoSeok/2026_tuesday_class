@@ -13,7 +13,7 @@
 | `2026_copy_web/` | 수업 외 참고 프로젝트 | — |
 | `lms/` | 학습 관리 시스템 — 질문 로그, 진도, 간격 반복 복습 (자세한 규칙: `lms/README.md`) | — |
 | `CLAUDE_BASIC/` | 외부 참고자료 PDF 모음. **학생에게는 `CLAUDE_BASIC/한글정리/`의 초보자용 한글 정리본을 우선 안내** (목차: `한글정리/README.md`) | — |
-| `lms-web/` | 웹 LMS (Next.js, 포트 3100) — `lms/` 마크다운을 읽어 대시보드·자료실·퀴즈·질문 추적을 보여준다. 실행: `cd lms-web && npm run dev` | — |
+| `lms-web/` | 웹 LMS (Next.js) — `lms/` 마크다운을 읽어 대시보드·자료실·퀴즈·질문 추적을 보여준다. **배포: https://lms-web-henna-six.vercel.app** · 로컬: `npm run dev`(3100) · 갱신 배포: `npm run deploy` | SeoBoSeok/2026_tuesday_class |
 
 ## 수업 운영 원칙 (Claude는 반드시 지킬 것)
 

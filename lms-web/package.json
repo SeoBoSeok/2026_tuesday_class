@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -p 3100",
     "lint": "eslint",
-    "sync-data": "node scripts/sync-data.mjs"
+    "sync-data": "node scripts/sync-data.mjs",
+    "deploy": "node scripts/sync-data.mjs && vercel deploy --prod --yes"
   },
   "dependencies": {
     "@vercel/blob": "^2.4.0",

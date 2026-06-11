@@ -28,4 +28,5 @@ description: 퀴즈 발송 — 복습 카드·질문에서 퀴즈를 만들어 �
    - 오답 보기는 학생이 실제로 헷갈릴 법한 것으로
    - explanation에는 "왜"가 들어가야 한다
 5. JSON 유효성을 검증한 뒤(`python3 -c "import json; json.load(open(...))"`)
-6. 강사에게 보고: 퀴즈 제목, 문항 수, 학생에게 공유할 주소(`http://localhost:3100/quiz`). 웹 서버가 꺼져 있으면 `cd lms-web && npm run dev` 안내.
+6. 배포 반영: `cd lms-web && npm run deploy` 실행 (data/ 동기화 + Vercel 프로덕션 배포).
+7. 강사에게 보고: 퀴즈 제목, 문항 수, 학생에게 공유할 주소 — 배포판 `https://lms-web-henna-six.vercel.app/quiz` (로컬 확인용은 `http://localhost:3100/quiz`).
