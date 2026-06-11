@@ -12,9 +12,17 @@
 | Phase | 내용 | 상태 |
 |-------|------|------|
 | 0. 기본기 | 저장·게임필·모바일·배포 (아래 로드맵) | 🔄 진행 중 |
-| 1. 까비 월드 (싱글) | 월드맵·캐릭터 빌더·숨겨진 요소·방명록 | ⬜ |
+| 1. 까비 월드 (싱글) | 월드맵·**트레이트 캐릭터 빌더(NFT 연동)**·인증샷·숨겨진 요소·방명록 | 🔄 **선생님 버전 뼈대 완성** |
 | 2. 사람이 보인다 | 실시간 접속자 + 말풍선 채팅 (Supabase Realtime) | ⬜ |
-| 3. 팬 플랫폼 | 학생B 홈페이지 임베드·배지·월드 속 오락실 | ⬜ |
+| 3. 팬 플랫폼 | 학생B 홈페이지 임베드·배지·월드 속 오락실·NFT 갤러리 | ⬜ |
+
+**🎮 선생님 버전 까비 월드 (바로 플레이)**: https://seoboseok.github.io/first-teacher/kkabbi-world.html
+— 마을·노을 언덕·달빛 숲 3개 맵, ↑키 포탈 이동, NPC 촌장 까비, 마지막 위치 저장.
+같은 마을의 [Phaser 엔진 비교 데모](https://seoboseok.github.io/first-teacher/phaser-town.html)도 있음 (엔진 선택 수업용).
+
+**🖼 NFT 연동**: 까비 IP는 [SpaceKkabbi NFT 컬렉션](https://opensea.io/SpaceKkabbi)과 연결 —
+캐릭터 빌더를 NFT 트레이트 구조(헤어·의상·얼굴·아이템·신발)로 설계, 인증샷 다운로드 기능 예정.
+상세: [비전 문서 §8](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/05-vision-kkabbi-world.md)
 
 ## 🎯 Phase 0 로드맵 (지금 할 일)
 
