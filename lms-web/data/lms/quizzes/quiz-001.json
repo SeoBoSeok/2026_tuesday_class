@@ -1,0 +1,67 @@
+{
+  "id": "quiz-001",
+  "title": "1차 복습 퀴즈 — 터미널과 CLI 기초",
+  "sentAt": "2026-06-12",
+  "target": "공통",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "choice",
+      "prompt": "터미널(Terminal)을 가장 잘 설명한 것은?",
+      "options": [
+        "컴퓨터를 텍스트 명령으로 조작하는 프로그램(창)",
+        "인터넷을 쓰기 위한 브라우저의 한 종류",
+        "파일을 저장하는 특별한 폴더",
+        "맥에만 있는 게임 앱"
+      ],
+      "answer": 0,
+      "explanation": "마우스 클릭 대신 글자로 명령하는 창이에요. 창을 띄우는 게 터미널 앱, 그 안에서 명령을 해석하는 건 셸(zsh)이라는 것도 기억나면 최고!"
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "prompt": "CLI는 무엇의 약자이고, 반대 개념은 무엇일까요?",
+      "options": [
+        "Command Line Interface — 반대는 GUI(마우스로 클릭하는 방식)",
+        "Computer Language Input — 반대는 출력(Output)",
+        "Claude Line Interface — 반대는 ChatGPT",
+        "Central Logic Internet — 반대는 오프라인"
+      ],
+      "answer": 0,
+      "explanation": "글자(명령줄)로 조작하면 CLI, 마우스로 클릭하면 GUI. 클로드 코드는 CLI 프로그램이에요."
+    },
+    {
+      "id": "q3",
+      "type": "choice",
+      "prompt": "`claude --version` 에서 `--`의 역할은?",
+      "options": [
+        "명령의 동작을 바꾸는 옵션(플래그)이라는 표시",
+        "빼기(마이너스) 계산을 하라는 뜻",
+        "명령을 두 번 반복하라는 뜻",
+        "주석(설명)이라서 실행되지 않는다는 뜻"
+      ],
+      "answer": 0,
+      "explanation": "긴 이름 옵션은 `--version`처럼 두 줄, 한 글자 축약형은 `-v`처럼 한 줄을 써요. 명령의 스위치라고 생각하면 돼요."
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "prompt": "Claude와 Claude Code의 관계로 알맞은 비유는?",
+      "options": [
+        "Claude가 엔진이라면, Claude Code는 그 엔진을 단 작업차",
+        "Claude가 노트라면, Claude Code는 연필",
+        "둘은 완전히 같은 프로그램의 다른 이름",
+        "Claude Code가 본체이고 Claude는 그 부속품"
+      ],
+      "answer": 0,
+      "explanation": "Claude는 AI 모델(두뇌), Claude Code는 그 두뇌를 터미널에서 코딩 도우미로 쓰게 해주는 도구예요."
+    },
+    {
+      "id": "q5",
+      "type": "short",
+      "prompt": "API와 MCP의 차이를 내 말로 설명해 보세요. (힌트: USB-C 비유)",
+      "answer": "API는 프로그램끼리 대화하는 약속(규약)의 일반 명칭이고, MCP는 그중에서도 'AI에게 외부 도구를 연결하는 표준 규격'이에요. API가 '전기 쓰는 법' 전반이라면 MCP는 'USB-C 단자'처럼 AI용으로 통일된 연결 방식이에요.",
+      "explanation": "MCP 서버가 속으로는 일반 API를 호출하는 경우도 많아요 — 즉 MCP는 API를 AI가 쓰기 좋게 포장한 어댑터인 셈이에요."
+    }
+  ]
+}

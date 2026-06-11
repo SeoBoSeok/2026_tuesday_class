@@ -1,0 +1,22 @@
+# 학생 개별 저장소 (각자 자기 GitHub에 푸시)
+first/
+first-commit/
+
+# 대용량·수업 외 자료 (로컬 전용)
+2026_claude_lecture_pamforest/
+2026_copy_web/
+
+# 참고자료 원본 PDF는 제외, 한글정리본만 포함
+CLAUDE_BASIC/*.pdf
+CLAUDE_BASIC/*.html
+
+# 퀴즈 결과 (로컬 테스트용 — 배포판은 Vercel Blob에 저장)
+lms/quiz-results/
+
+# 빌드 산출물·시스템 파일
+node_modules/
+.next/
+.vercel
+.omc/
+.DS_Store
+*.tsbuildinfo
