@@ -46,6 +46,9 @@
 > 학생 버전을 fork해서 "소프트웨어 공학적으로 완성까지" 진행하는 참고 구현.
 
 - **저장소**: https://github.com/SeoBoSeok/first-teacher (학생A repo의 fork)
+- **🎮 바로 플레이** (GitHub Pages):
+  - 까비 어드벤처: https://seoboseok.github.io/first-teacher/kkabbi-adventure.html
+  - RETRO CHASER: https://seoboseok.github.io/first-teacher/
 - **핵심 문서** (코드보다 먼저 읽기):
   - [PRD — 비전·마일스톤 M1~M4·하지 않을 것](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/01-PRD.md)
   - [기능 리스트 & 플레이어 시나리오](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/02-features-scenarios.md)
