@@ -26,9 +26,16 @@
 
 ## 👨‍🏫 선생님 버전
 
-> 학생 버전과 비교하며 배우는 참고 구현. 준비되면 여기에 링크가 생깁니다.
+> 학생 버전을 fork해서 "소프트웨어 공학적으로 완성까지" 진행하는 참고 구현.
 
-- 준비 중 — 다음 코치 세션에서 "최고 점수 저장" 기능의 선생님 버전을 먼저 보여줄 예정
+- **저장소**: https://github.com/SeoBoSeok/first-teacher (학생A repo의 fork)
+- **핵심 문서** (코드보다 먼저 읽기):
+  - [PRD — 비전·마일스톤 M1~M4·하지 않을 것](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/01-PRD.md)
+  - [기능 리스트 & 플레이어 시나리오](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/02-features-scenarios.md)
+  - [기술 결정 — 참고 게임·엔진 선택·조작법](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/03-tech-decisions.md)
+  - [선생님 노하우 — 게임 개발·클로드코드 습관](https://github.com/SeoBoSeok/first-teacher/blob/main/docs/04-teacher-notes.md)
+- **보는 법**: 학생 버전과 선생님 버전의 커밋 diff가 곧 수업 자료. "기능이 아니라 과정이 다르다"
+- 진행 순서: M1 저장(localStorage) → M2 게임필·밸런스 → M3 모바일 터치 → M4 배포
 
 ## 📈 코치 세션 (성장 기록)
 
