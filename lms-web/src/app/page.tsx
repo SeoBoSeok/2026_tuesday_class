@@ -19,7 +19,9 @@ export default async function Dashboard() {
     <div className="space-y-8">
       <section>
         <h1 className="text-2xl font-bold mb-1">오늘의 학습 현황</h1>
-        <p className="text-sm text-gray-500">진도·복습·질문을 한눈에 봅니다.</p>
+        <p className="text-sm text-gray-500">
+          안녕하세요, AI 학습 매니저 <b className="text-amber-700">코코</b>예요 🤖 — 진도·복습·질문·코칭을 한눈에 보여드릴게요.
+        </p>
       </section>
 
       {/* 요약 카드 */}

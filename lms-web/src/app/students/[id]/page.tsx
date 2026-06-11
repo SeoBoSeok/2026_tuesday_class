@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { marked } from "marked";
-import { getCommits, getQuizResults, getStudent, getStudentNote, getCards } from "@/lib/data";
+import { getCoaching, getCommits, getQuizResults, getStudent, getStudentNote, getCards } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +15,8 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
   const noteHtml = note ? await marked.parse(note) : "";
   const myResults = (await getQuizResults()).filter((r) => r.student === student.name.replace(" ", ""));
   const weakCards = getCards().filter((c) => c.status === "활성" && c.box === 1);
+  const coaching = getCoaching(student);
+  const coachingHtml = coaching ? await marked.parse(coaching.split("\n").slice(1).join("\n")) : "";
 
   return (
     <div className="space-y-8">
@@ -43,6 +45,20 @@ export default async function StudentPage({ params }: { params: Promise<{ id: st
           </ol>
         )}
       </section>
+
+      {/* 선생님 코칭 */}
+      {coachingHtml && (
+        <section className="rounded-xl bg-gradient-to-b from-amber-50 to-white p-5 md:p-6 shadow-sm border-2 border-amber-300">
+          <div className="flex items-baseline justify-between flex-wrap gap-2 mb-1">
+            <h2 className="font-bold text-lg">🎓 선생님 코칭</h2>
+            <span className="text-xs text-gray-400">로드맵 · 필요한 기술 · 선생님 버전 · 성장 기록</span>
+          </div>
+          <p className="text-xs text-gray-500 mb-4">
+            이 프로젝트를 완성까지 끌고 가기 위한 선생님의 가이드예요. 코치 세션은 수업마다 쌓여서 성장 과정이 기록돼요.
+          </p>
+          <div className="md-body text-sm" dangerouslySetInnerHTML={{ __html: coachingHtml }} />
+        </section>
+      )}
 
       <section className="grid md:grid-cols-2 gap-4">
         {/* 퀴즈 성적 */}

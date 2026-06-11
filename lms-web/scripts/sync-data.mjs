@@ -13,6 +13,7 @@ const COPIES = [
   ["lms/students", "lms/students"],
   ["lms/quizzes", "lms/quizzes"],
   ["lms/classlog", "lms/classlog"],
+  ["lms/coaching", "lms/coaching"],
   ["CLAUDE_BASIC/한글정리", "materials"],
 ];
 

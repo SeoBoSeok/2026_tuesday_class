@@ -171,6 +171,11 @@ export function getStudentNote(s: Student): string {
   return readSafe(path.join(LMS_DIR, "students", s.file));
 }
 
+// 선생님 코칭 문서 (로드맵·기술 체크리스트·선생님 버전·코치 세션)
+export function getCoaching(s: Student): string {
+  return readSafe(path.join(LMS_DIR, "coaching", s.file));
+}
+
 export interface Commit {
   hash: string;
   date: string;
